@@ -5,8 +5,11 @@ Content editor for wxy
 # Configuration
 
 ```
-$config['auth-user'] = 'myusername'; // shared with wxy-single-auth, FALSE to not require any auth
-$config['editor-template'] = 'editor.html'; // template file to use with twig
+// shared with wxy-single-auth, FALSE to not require any auth
+$config['auth-user'] = 'myusername'; // FALSE by default
+
+// template file to use with twig
+$config['editor-template'] = 'editor.html';
 // Note: if editor.html exists in the theme, it will be used, which may be good, or not ...
 ```
 
