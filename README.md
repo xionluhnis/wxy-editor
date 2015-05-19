@@ -6,6 +6,7 @@ Content editor for wxy
 
 * [Icomoon](https://icomoon.io/) - custom icon fonts
 * [Editor](https://github.com/lepture/editor) - markdown editor
+* [Marked](https://github.com/chjj/marked) - markdown parser
 
 # License
 
