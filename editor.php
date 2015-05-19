@@ -59,8 +59,10 @@ class Editor {
         $title = Request::get_parameter('title');
         $file = Files::resolve_page($url);
         $content = Request::get_parameter('content');
+
         // decode entities
         if(Request::get_parameter('htmlentities', TRUE)){
+            // XXX this is used because get_parameter strips tags, which we could avoid!
             $content = html_entity_decode($content); // by default, we decode html entities
         }
 
