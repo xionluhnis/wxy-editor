@@ -40,7 +40,7 @@
     function updateFunction(params){
         return function(editor){
             $('#saving').addClass('active').find('.text').text(params.loadingText || 'Updating ...');
-            var content = params.content || editor.codemirror.getValue();
+            var content = 'content' in params ? params.content : editor.codemirror.getValue();
             content = htmlentities(content);
             // console.log('%o', content);
             $.post(current_url, { edit: true, content: content }, function(data){
@@ -69,7 +69,8 @@
     });
     var deleteFile = updateFunction({
         loadingText: 'Deleting...',
-        loadedText: 'Deleted'
+        loadedText: 'Deleted',
+        content: ''
     });
     function safeDeleteFile(editor){
         var ok = confirm('Do you really want to delete this page?');

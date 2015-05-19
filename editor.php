@@ -61,9 +61,17 @@ class Editor {
         }
     }
 
+    public static function get_file($url, $file_ext = CONTENT_EXT) {
+        $base_dir  = rtrim(Files::base_dir(), '/');
+        $base_file = $base_dir . $url;
+        if(Text::ends_with($base_file, '/'))
+            $base_file .= 'index';
+        return $base_file . $file_ext;
+    }
+
     private function update($url) {
         $title = Request::get_parameter('title');
-        $file = Files::resolve_page($url);
+        $file = self::get_file($url);
         $content = Request::get_parameter('content');
 
         // decode entities
@@ -91,7 +99,7 @@ class Editor {
     }
 
     private function show($url) {
-        $file = Files::resolve_page($url);
+        $file = self::get_file($url);
 
         $content = '';
         if(file_exists($file)){
