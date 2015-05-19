@@ -13,6 +13,7 @@ class Editor {
     private $user;
     private $edit_state;
     private $edit_template;
+    private $reset_header;
 
     public function __construct() {
         $this->edit_state = FALSE;
@@ -29,6 +30,11 @@ class Editor {
             $this->edit_template = $config['editor-template'];
         else
             $this->edit_template = 'editor.html';
+        // header overwrite
+        if(array_key_exists('editor-reset-header', $config))
+            $this->reset_header = $config['editor-reset-header'];
+        else
+            $this->reset_header = FALSE;
     }
 
     public function request_url(&$route){
@@ -93,7 +99,7 @@ class Editor {
         } else {
             // XXX we should check that we can create the file eventually
             $content = '/*
-Title: ' . basename($filename) . '
+Title: ' . basename(str_replace(CONTENT_EXT, '', $file)) . '
 Date: ' . date('Y/m/d') . '
 */';
         }
@@ -109,7 +115,8 @@ Date: ' . date('Y/m/d') . '
             return;
 
         // override 404 header in case we need
-        header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
+        if($this->reset_header)
+            header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
 
         // load special editor template
         $loader = $twig->getLoader();
