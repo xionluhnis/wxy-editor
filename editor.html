@@ -29,12 +29,22 @@
     <script src="{{ base_url }}/{{ editor_path }}/editor/src/intro.js"></script>
     <script src="{{ base_url }}/{{ editor_path }}/editor/src/editor.js"></script>
     <script type="text/javascript">
+    // @see http://stackoverflow.com/questions/784586/convert-special-characters-to-html-in-javascript
+    function htmlentities(s) {
+        var el = document.createElement("div");
+        el.innerText = el.textContent = s;
+        s = el.innerHTML;
+        return s;
+    }
     // main function
     function updateFunction(params){
         return function(editor){
             $('#saving').addClass('active').find('.text').text(params.loadingText || 'Updating ...');
-            $.post(current_url, { edit: true, content: params.content || editor.codemirror.getValue() }, function(data){
-                // console.log('%o', data);
+            var content = params.content || editor.codemirror.getValue();
+            content = htmlentities(content);
+            console.log('%o', content);
+            $.post(current_url, { edit: true, content: content }, function(data){
+                console.log('%o', data);
                 if(data.error !== ''){
                     $('#error').addClass('active').text(data.error || data);
                     $('#saving').removeClass('active');
@@ -87,6 +97,7 @@
 
         var editor = new Editor();
         editor.render();
+        $('.editorwrap').data('editor', editor);
     });
     </script>
 
