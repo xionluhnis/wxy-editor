@@ -10,7 +10,8 @@ $config['auth-user'] = 'myusername'; // FALSE by default
 
 // template file to use with twig
 $config['editor-template'] = 'editor.html';
-// Note: if editor.html exists in the theme, it will be used, which may be good, or not ...
+// Note: if editor.html exists in the theme, it will be used,
+//       which may be good, or not ...
 ```
 
 # Dependency
