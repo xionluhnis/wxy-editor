@@ -1,0 +1,67 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  background-color: #fff3f3;
+}
+
+#saving, #error {
+  display: none;
+}
+#saving.active, #error.active {
+  display: block;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 2em;
+  font-size: 1.5em;
+  border: 1px solid silver;
+  line-height: 2em;
+}
+#saving.active .text {
+  margin-left: 50px;
+}
+#saving {
+  background: rgba(100, 255, 100, 0.7);
+}
+#error {
+  background: red;
+  color: white;
+  font-weight: bold;
+  padding-left: 50px;
+}
+
+.editorwrap {
+  min-width: 400px;
+  border: 1px solid #c0c0c0;
+  padding: 10px 30px;
+  margin: 60px 50px;
+  background-color: #f9f9f7;
+  box-shadow: 5px 5px 5px #efefef;
+}
+.editorwrap .CodeMirror {
+  height: 100%;
+}
+
+.editor-toolbar a.icon-save[title]::before {
+  color: blue;
+  background: white;
+}
+.editor-toolbar a.icon-save[title] {
+  border: 1px dashed blue;
+}
+
+.title {
+  display: block;
+  width: 90%;
+  margin: 0px auto;
+  line-height: 1.5em;
+  font-size: 1.5em;
+  color: rgb(94, 147, 255);
+  padding-bottom: 5px;
+}

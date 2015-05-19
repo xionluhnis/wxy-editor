@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <title>Page Editor</title>
+    <link rel="stylesheet" href="{{ base_url }}/{{ editor_path }}/style.css" type="text/css" />
+    <link rel="stylesheet" href="{{ base_url }}/{{ editor_path }}/editor/paper.css" type="text/css" />
+    <link rel="stylesheet" href="{{ base_url }}/{{ editor_path }}/editor/editor.css" type="text/css" />
+    <link rel="stylesheet" href="{{ base_url }}/{{ editor_path }}/icomoon/style.css" type="text/css" />
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <div id="saving"><span class="text">Saving...</span></div>
+    <div id="error">{{ error }}</div>
+    <div class="editorwrap">
+      <span class="title">{{ base_url ~ url }}</span>
+      <textarea>{{ content }}</textarea>
+    </div>
+
+    <script type="text/javascript">
+      var current_url = '{{ base_url ~ url }}';
+    </script>
+    <script src="{{ base_url }}/{{ editor_path }}/js/jquery.min.js"></script>
+    <script src="{{ base_url }}/{{ editor_path }}/editor/marked.min.js"></script>
+    <script src="{{ base_url }}/{{ editor_path }}/editor/vendor/codemirror.js"></script>
+    <script src="{{ base_url }}/{{ editor_path }}/editor/vendor/continuelist.js"></script>
+    <script src="{{ base_url }}/{{ editor_path }}/editor/vendor/markdown.js"></script>
+    <script src="{{ base_url }}/{{ editor_path }}/editor/vendor/xml.js"></script>
+    <script src="{{ base_url }}/{{ editor_path }}/editor/src/intro.js"></script>
+    <script src="{{ base_url }}/{{ editor_path }}/editor/src/editor.js"></script>
+    <script type="text/javascript">
+    // main function
+    function updateFunction(params){
+        return function(editor){
+            $('#saving').addClass('active').find('.text').text(params.loadingText || 'Updating ...');
+            $.post(current_url, { edit: true, content: params.content || editor.codemirror.getValue() }, function(data){
+                // console.log('%o', data);
+                if(data.error !== ''){
+                    $('#error').addClass('active').text(data.error || data);
+                    $('#saving').removeClass('active');
+                    setTimeout(function(){
+                        $('#error').removeClass('active');
+                    }, 1000);
+                } else {
+                    $('#saving .text').text(params.loadedText || 'Updated');
+                    document.title = document.title.replace(' *', '');
+                    setTimeout(function(){
+                        $('#saving').removeClass('active');
+                        if(params.callback)
+                            params.callback();
+                    }, 1000);
+                }
+            }, 'json');
+        };
+    }
+    var saveFile = updateFunction({
+        loadingText: 'Saving...',
+        loadedText: 'Saved',
+    });
+    var deleteFile = updateFunction({
+        loadingText: 'Deleting...',
+        loadedText: 'Deleted'
+    });
+    function safeDeleteFile(editor){
+        var ok = confirm('Do you really want to delete this page?');
+        if(!ok) return;
+        deleteFile(editor);
+    }
+
+    var saveAndBrowse = updateFunction({
+        loadingText: 'Saving...',
+        loadedText: 'Saved',
+        callback: function(){
+            window.location = current_url;
+        }
+    });
+
+    $(function() {
+        // add the save and delete actions
+        var saveIdx = Editor.toolbar.length - 1;
+        Editor.toolbar.splice(saveIdx, 0,
+            { name: 'save', action: saveFile },
+            { name: 'delete', action: safeDeleteFile },
+            '|',
+            { name: 'save', shortcut: 'Ctrl-S', action: saveAndBrowse }
+        );
+
+        var editor = new Editor();
+        editor.render();
+    });
+    </script>
+
+  </body>
+</html>
