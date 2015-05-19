@@ -42,9 +42,9 @@
             $('#saving').addClass('active').find('.text').text(params.loadingText || 'Updating ...');
             var content = params.content || editor.codemirror.getValue();
             content = htmlentities(content);
-            console.log('%o', content);
+            // console.log('%o', content);
             $.post(current_url, { edit: true, content: content }, function(data){
-                console.log('%o', data);
+                // console.log('%o', data);
                 if(data.error !== ''){
                     $('#error').addClass('active').text(data.error || data);
                     $('#saving').removeClass('active');
