@@ -2,6 +2,8 @@
 
 Content editor for wxy
 
+![](wxy-editor.png)
+
 # Configuration
 
 ```
